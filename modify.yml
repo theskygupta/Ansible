@@ -1,0 +1,15 @@
+---
+ - name: abc
+   hosts: all
+   tasks:
+    - name: replacing content on dev host
+      copy:
+       content: 'Development'
+       dest: /etc/issue
+      when: inventory_hostname in groups['dev']
+
+    - name: replacing content on test host
+      copy:
+       content: 'Test'
+       dest: /etc/issue
+      when: inventory_hostname in groups['test']
