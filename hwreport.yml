@@ -1,0 +1,36 @@
+---
+ - name: create a hw report
+   hsost: all
+   tasks:
+    - name: download report file
+      get_url:
+       url: http://192.168.1.8/hwreport.empty
+       dest: /root/hwreport.txt
+       
+    - replace:
+       path: /root/hwreport.txt
+       regexp: 'hostname'
+       replace: '{{ ansible_hostname }}'
+      when: ansible_hostname is defined
+
+    - replace:
+       path: /root/hwreport.txt
+       regexp: 'hostname'
+       replace: 'none'
+      when: ansible_hostname is not defined
+
+    - replcae: 
+       path: /root/hwreport.txt
+       regexp: 'biosversion'
+       replace: '{{ anible_bios_version}}'
+      when: ansible_bios_version is defined
+
+    - replcae:
+       path: /root/hwreport.txt
+       regexp: 'biosversion'
+       replace: 'none'
+      when: ansible_bios_version is not defined
+
+    - replace:
+       path: /root/hwreport.txt
+       regexp: 

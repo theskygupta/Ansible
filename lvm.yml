@@ -1,0 +1,33 @@
+---
+ - name: playbook for lvm
+   hosts: all
+   ignore_errors: yes
+   tasks:
+    - name: create lv of size '1500'
+      lvol:
+       lv: data
+       vg: resaerch
+       size: '1500'
+      when: ansible_lvm.vgs.research.free_g > '1.5'
+
+    - name: VG not found
+      debug:
+       msg: 'VG not Found'
+      when: ansible_lvm.vgs.research is not defined
+
+    - name: lv can not create
+      debug:
+       msg: 'LV can not create with given size'
+      when: ansible_lvm.vgs.research.free_g < '1.5'
+
+    - name: create lv of size '800'
+      lvol:
+       lv: data
+       vg: research
+       size: '800'
+      when: ansible_lvm.vgs.research.free_g < '1.5'
+
+    - name: format dev with ext4
+      filesystem:
+       fstype: ext4
+       dev: /dev/research/data

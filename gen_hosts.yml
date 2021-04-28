@@ -1,0 +1,9 @@
+---
+ - name: copy template
+   hosts: all
+   tasks:
+    - name: template file
+      template:
+       src: ./hosts.j2
+       dest: /etc/myhost
+#      when: inventory_hostname in groups['dev']

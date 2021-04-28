@@ -1,0 +1,9 @@
+---
+ - name: calling timesync role
+   hosts: all
+   vars:
+    timesync_ntp_server:
+     - hostname: server 0.in.pool.ntp.org
+     - iburst: yes
+   roles:
+    - rhel-system-roles.timesync

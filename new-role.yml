@@ -1,0 +1,5 @@
+---
+ - name: calling apache role
+   hosts: all
+   roles:
+    - apache

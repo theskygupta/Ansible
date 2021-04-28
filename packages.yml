@@ -1,0 +1,20 @@
+---
+ - name: playbook for yum
+   hosts: dev test
+   tasks:
+    - name: installing mariadb and php
+      yum:
+       name: 
+        - mariadb
+        - php
+       state: present
+
+ - name: 2nd play
+   hosts: dev
+   tasks:
+    - name: upgrading all packages
+      yum:
+       name: '*'
+       state: latest
+
+

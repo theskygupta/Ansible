@@ -1,0 +1,32 @@
+---
+ - name: create a users from external yaml file
+   hosts: all
+   vars_files:
+    - locker.yml
+    - user_list.yml
+   tasks:
+    - name: create groups called devops and opsmgr
+      group:
+       name: '{{ item }}'
+       state: present
+      loop:
+       - devmgr
+       - opsmgr
+
+    - name: create first user whose job discription is developer
+      user:
+       name: "{{ item.name }}"
+       state: present
+       group: devmgr
+       password: "{{ PW_developer|password_hash ('sha512') }}"
+      loop: '{{ users }}'
+      when: inventory_hostname in groups['dev'] and item.job=='developer'
+
+    - name: create 2nd user whose job description is opsmgr
+      user:
+       name: "{{ item.name }}"
+       group: opsmgr
+       state: present
+       password: "{{ PW_manager|password_hash ('sha512') }}"
+      loop: '{{ users }}'
+      when: inventory_hostname in groups['test'] and item.job=='manager'
